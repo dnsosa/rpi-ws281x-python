@@ -2,7 +2,8 @@
 # rpi_ws281x library strandtest example
 # Author: Tony DiCola (tony@tonydicola.com)
 #
-
+# Direct port of the Arduino NeoPixel library strandtest example.  Showcases
+# various animations on a strip of NeoPixels.
 
 import time
 from rpi_ws281x import *
@@ -14,11 +15,9 @@ LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 40      # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 2      # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-NUM_ITER       = 500
-
 
 
 
@@ -44,13 +43,13 @@ def theaterChase(strip, color, wait_ms=50, iterations=10):
 def wheel(pos):
     """Generate rainbow colors across 0-255 positions."""
     if pos < 85:
-        return Color(pos * 3, 255 - pos * 3, 0)
+        return Color(pos * 3, 255 - pos * 3, 255)
     elif pos < 170:
         pos -= 85
-        return Color(255 - pos * 3, 0, pos * 3)
+        return Color(255 - pos * 3, 0, 255)
     else:
         pos -= 170
-        return Color(0, pos * 3, 255 - pos * 3)
+        return Color(0, pos * 3, 255)
 
 
 def rainbow(strip, wait_ms=20, iterations=1):
@@ -99,21 +98,19 @@ if __name__ == '__main__':
     try:
 
         #while True:
-        for N in range(NUM_ITER):
+        for N in range(1000):
             print ('Color wipe animations.')
-            #theaterChase(strip, Color(255, 255, 0))  # Red wipe
+            #colorWipe(strip, Color(255, 0, 0))  # Red wipe
             #colorWipe(strip, Color(0, 255, 0))  # Blue wipe
             #colorWipe(strip, Color(0, 0, 255))  # Green wipe
             print (f"Theater chase animations. Iteration {N}")
-            #theaterChase(strip, Color(204, 204, 0))  # White theater chase
-            #theaterChase(strip, Color(255, 255, 255))
-            #theaterChase(strip, Color(100,   70,   0))  # Red theater chase
-            #theaterChase(strip, Color(255, 0, 0)) # Real Red theater chase
-            #theaterChase(strip, Color(  0,   0, 255))  # Blue theater chase
+            #theaterChase(strip, Color(127, 127, 127))  # White theater chase
+            #theaterChase(strip, Color(127,   0,   0))  # Red theater chase
+            #theaterChase(strip, Color(  0,   0, 127))  # Blue theater chase
             print (f"Rainbow animations. Iteration {N}")
             #rainbow(strip)
-            #rainbowCycle(strip)
-            theaterChaseRainbow(strip)
+            rainbowCycle(strip)
+            #theaterChaseRainbow(strip)
         colorWipe(strip, Color(0,0,0), 10)
 
     except KeyboardInterrupt:
